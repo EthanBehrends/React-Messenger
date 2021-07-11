@@ -1,0 +1,18 @@
+.channel {
+    color: white;
+    display: block;
+    width: 100%;
+    padding: 10px 20px;
+    box-sizing: border-box;
+    background: linear-gradient(rgba(231, 231, 255, 0.1),5%, rgba(231, 231, 255, 0));
+    transition: .2s;
+    cursor: pointer;
+}
+
+.channel:hover:not(.selected) {
+    background: linear-gradient(rgba(231, 231, 255, 0.2),5%, rgba(231, 231, 255, 0))
+}
+
+.selected {
+    background: linear-gradient(rgba(231, 231, 255, 0.2),90%, rgba(231, 231, 255, 0))
+}

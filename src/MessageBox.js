@@ -10,7 +10,9 @@ function MessageBox(props) {
 
         const postData = {
             username: "ethanBehrends",
-            message: message
+            message: message,
+            name: "New Name",
+            channel: props.channel
         }
 
         setMessage("")

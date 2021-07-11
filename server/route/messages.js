@@ -12,10 +12,14 @@ router.route('/').get((req,res) => {
 router.route('/send').post((req,res) => {
     const username = req.body.username
     const message = req.body.message
+    const name = req.body.name
+    const channel = req.body.channel
 
     const newMessage = new Message({
         username: username,
-        message: message
+        message: message,
+        name: name,
+        channel: channel
     })
 
     newMessage.save()

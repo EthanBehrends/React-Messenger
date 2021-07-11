@@ -14,6 +14,14 @@ const messageSchema = new Schema({
     message: {
         type: String,
         required: true
+    },
+    name: {
+        type: String,
+        required: true
+    },
+    channel: {
+        type: String,
+        required: true
     }
 
 })

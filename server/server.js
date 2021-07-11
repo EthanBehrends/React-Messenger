@@ -32,9 +32,11 @@ connection.once('open', () => {
 
 const messagesRouter = require('./route/messages')
 const usersRouter = require('./route/users')
+const channelsRouter = require('./route/channels')
 
 app.use('/messages', messagesRouter)
 app.use('/users', usersRouter)
+app.use('/channels', channelsRouter)
 
 server.listen(port, () => {
     console.log("Server is running on port " + port)
