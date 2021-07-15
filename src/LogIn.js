@@ -3,9 +3,27 @@ import { Container, TextField, Button, Paper, Grid } from '@material-ui/core'
 import { useState } from 'react'
 import axios from 'axios'
 
+
 function LogIn (props) {
     const [username,setUsername] = useState()
     const [password, setPassword] = useState()
+
+    function onSubmit(e) {
+        e.preventDefault();
+
+        let data = {
+            username: username,
+            password: password
+        }
+
+        axios.post("http://localhost:5000/users/login", data).then(res => {
+            if(res.data.success) {
+                props.setName(res.data.name)
+                props.setUser(username)
+            }
+
+        })
+    }
 
     return(
         <Container maxWidth="sm">
@@ -24,7 +42,7 @@ function LogIn (props) {
                                 <Button color="primary">Sign Up</Button>
                             </Grid>
                             <Grid item xs={3}>
-                                <Button variant="contained" color="primary">Log In</Button>
+                                <Button onClick={onSubmit} variant="contained" color="primary">Log In</Button>
                             </Grid>
                         </Grid>
                         

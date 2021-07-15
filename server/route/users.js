@@ -1,3 +1,5 @@
+let crypto = require('crypto')
+
 const router = require('express').Router()
 let User = require('../models/user.model')
 
@@ -30,15 +32,25 @@ router.route('/login').post((req,res) => {
     const username = req.body.username;
     const password = req.body.password;
 
-    const uData = User.find({username: username});
+    let resData = {
+        success: false,
+        name: "",
+        error: ""
+    }
 
-    if(hash(password, uData.salt) === uData.hash) {
-        req.session.username = username;
-        res.redirect('/')
-    }
-    else {
-        res.json('Incorrect username or password')
-    }
+    User.findOne({username: username}).then(uData => {
+        if(hash(password, uData.salt) === uData.hash) {
+            req.session.username = username;
+            resData.success = true;
+            resData.name = uData.name;
+            res.json(resData)
+        }
+        else {
+            resData.error = 'Incorrect username or password'
+            res.json(resData)
+        }
+    })
+    
 })
 
 module.exports = router

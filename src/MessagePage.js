@@ -4,6 +4,7 @@ import MessageBox from './MessageBox'
 import Channel from './Channel'
 import axios from 'axios'
 import { useEffect, useState } from 'react'
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 function MessagePage (props) {
     const [messages, setMessages] = useState([]);
@@ -48,8 +49,9 @@ function MessagePage (props) {
                     })
                 }
             </div>
-            <MessageBox channel={channel} addMessage={addMessage}></MessageBox>
+            <MessageBox username={props.username} name={props.name} channel={channel} addMessage={addMessage}></MessageBox>
             <div id="channels">
+                <ExitToAppIcon style={{color: 'white'}} onClick={props.logout} />
                 <div className="channelsHeader">Channels</div>
                 <Channel select={setChannel} selected={channel} name="General" />
                 <Channel select={setChannel} selected={channel} name="Video Games" />

@@ -9,9 +9,9 @@ function MessageBox(props) {
         e.preventDefault();
 
         const postData = {
-            username: "ethanBehrends",
+            username: props.username,
             message: message,
-            name: "New Name",
+            name: props.name,
             channel: props.channel
         }
 

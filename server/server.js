@@ -17,7 +17,11 @@ const io = require('socket.io')(server, {
 const port = process.env.PORT || 5000
 const secret = process.env.SESSION || "secret"
 
-app.use(session({secret: secret}))
+app.use(session({
+    secret: secret,
+    saveUninitialized: false,
+    resave: false
+}))
 
 app.use(cors({
     origin: "*"
