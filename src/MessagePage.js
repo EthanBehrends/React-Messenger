@@ -8,7 +8,13 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 function MessagePage (props) {
     const [messages, setMessages] = useState([]);
+    const [channels, setChannels] = useState([]);
     const [channel, setChannel] = useState("General")
+
+    useEffect(() => {
+        axios.get('http://localhost:5000/channels')
+        .then(response => setChannels(response.data))
+    },[])
 
     useEffect(() => {
         axios.get('http://localhost:5000/messages?channel=' + channel)
@@ -53,9 +59,13 @@ function MessagePage (props) {
             <div id="channels">
                 <ExitToAppIcon style={{color: 'white'}} onClick={props.logout} />
                 <div className="channelsHeader">Channels</div>
-                <Channel select={setChannel} selected={channel} name="General" />
-                <Channel select={setChannel} selected={channel} name="Video Games" />
-                <Channel select={setChannel} selected={channel} name="Software Development" />
+                {
+                    channels.slice(0).sort().map((x,i) => {
+                        return (
+                            <Channel key={i} select={setChannel} selected={channel} name={x.channel} />
+                        )
+                    })
+                }
                 <div className="channelsHeader">Users</div>
             </div>
         </div>

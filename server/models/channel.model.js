@@ -7,6 +7,10 @@ const channelSchema = new Schema({
         type: String,
         required: true
     },
+    public: {
+        type: Boolean,
+        default: true
+    },
     time: {
         type: Date,
         default: new Date

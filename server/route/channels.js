@@ -12,10 +12,12 @@ router.route('/').get((req,res) => {
 router.route('/new').post((req,res) => {
     const creator = req.body.creator
     const name = req.body.name
+    const public = req.body.public
 
-    const newChannel = new Message({
-        creator: creator,
-        name: name
+    const newChannel = new Channel({
+        creatorName: creator,
+        channel: name,
+        public: (public ? public : true)
     })
 
     newChannel.save()
