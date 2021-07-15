@@ -2,7 +2,7 @@ const router = require('express').Router()
 let Message = require('../models/message.model')
 
 router.route('/').get((req,res) => {
-    Message.find()
+    Message.find({channel:req.query.channel})
         .then(messages => res.json(messages))
         .catch(err => {
             res.status(400).json('Error: ' + err)
@@ -24,6 +24,12 @@ router.route('/send').post((req,res) => {
 
     newMessage.save()
         .then(() => res.json('Message sent.'))
+        .catch(err => res.status(400).json('Error: ' + err))
+})
+
+router.route('/delete').delete((req,res) => {
+    Message.findByIdAndRemove(req.body.id)
+        .then(() => res.json('Message deleted'))
         .catch(err => res.status(400).json('Error: ' + err))
 })
 

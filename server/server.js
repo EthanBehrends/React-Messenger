@@ -1,4 +1,5 @@
 const express = require('express')
+const session = require('express-session')
 const cors = require('cors')
 const mongoose = require('mongoose')
 
@@ -9,11 +10,14 @@ const server = require('http').createServer(app)
 const io = require('socket.io')(server, {
     cors: {
         origin: "*",
-        methods: ["GET", "POST"]
+        methods: ["GET", "POST", "DELETE"]
     }
 })
 
 const port = process.env.PORT || 5000
+const secret = process.env.SESSION || "secret"
+
+app.use(session({secret: secret}))
 
 app.use(cors({
     origin: "*"
@@ -21,6 +25,7 @@ app.use(cors({
 
 app.use(express.json())
 
+mongoose.set('useFindAndModify', false)
 mongoose.connect('mongodb://localhost/messageApp', {
     useNewUrlParser: true, useUnifiedTopology: true
 })
@@ -45,5 +50,8 @@ server.listen(port, () => {
 io.on('connection', socket => {
     socket.on('sendMessage', data => {
         socket.broadcast.emit("newMessage", data)
+    })
+    socket.on('deleteMessage', data => {
+        socket.broadcast.emit("delMessage", data)
     })
 })

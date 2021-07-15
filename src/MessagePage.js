@@ -10,19 +10,29 @@ function MessagePage (props) {
     const [channel, setChannel] = useState("General")
 
     useEffect(() => {
-        axios.get('http://localhost:5000/messages')
+        axios.get('http://localhost:5000/messages?channel=' + channel)
         .then(response => setMessages(response.data))
-    },[])
+    },[channel])
     
     let addMessage = (mess) => {
         setMessages([...messages, mess])
         props.socket.emit("sendMessage", mess)
     }
 
+    let deleteMessage = (id) => {
+        props.socket.emit("deleteMessage", id)
+        axios.delete('http://localhost:5000/messages/delete', { data: {id: id}}) 
+        setMessages(m => [...m].filter(x => x._id !== id))
+
+    }
+
     useEffect(() => {
         if(props.socket !== undefined) {
             props.socket.on('newMessage', data => {
                 setMessages(m => [...m, data]);
+            })
+            props.socket.on("delMessage", data => {
+                setMessages(m => [...m].filter(x => x._id !== data))
             })
         }
     }, [props.socket])
@@ -33,7 +43,7 @@ function MessagePage (props) {
                 {
                     messages.slice(0).reverse().map((x,i) => {
                         return(
-                            <Message key={i} username={x.username} name={x.name} content={x.message}></Message>
+                            <Message deleteFunc={deleteMessage} dbId={x._id} key={i} username={x.username} name={x.name} content={x.message}></Message>
                         )
                     })
                 }
@@ -41,9 +51,9 @@ function MessagePage (props) {
             <MessageBox channel={channel} addMessage={addMessage}></MessageBox>
             <div id="channels">
                 <div className="channelsHeader">Channels</div>
-                <Channel selected name="General" />
-                <Channel name="Video Games" />
-                <Channel name="Software Development" />
+                <Channel select={setChannel} selected={channel} name="General" />
+                <Channel select={setChannel} selected={channel} name="Video Games" />
+                <Channel select={setChannel} selected={channel} name="Software Development" />
                 <div className="channelsHeader">Users</div>
             </div>
         </div>

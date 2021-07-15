@@ -1,5 +1,6 @@
 .messageCont {
     padding: 15px;
+    position: relative;
     box-shadow: 0px 0px 2px rgba(0,0,0,.5);
     background: linear-gradient(rgba(0,0,10,.2),5%, rgba(0,0,10,0))
 }
@@ -19,4 +20,20 @@
 .messageContent {
     padding: .5em 0;
 
+}
+
+.delEdit {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 10px;
+    display: none;
+}
+
+.delEdit svg {
+    cursor: pointer;
+}
+
+.messageCont:hover .delEdit {
+    display: block
 }

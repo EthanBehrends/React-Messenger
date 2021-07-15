@@ -10,11 +10,17 @@ const userSchema = new Schema({
         trim: true,
         minLength: 4
     },
+    email: {
+        type: String,
+        required: true
+    },
     name: {
         type: String,
         required: true,
         trim: true
-    }
+    },
+    hash: String,
+    salt: String
 }, {
     timestamps: true
 })
