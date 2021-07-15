@@ -22,6 +22,10 @@ const messageSchema = new Schema({
     channel: {
         type: String,
         required: true
+    },
+    edited: {
+        type: Boolean,
+        default: false
     }
 
 })

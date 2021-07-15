@@ -42,7 +42,7 @@ function SignUp (props) {
                 <Grid container alignItems="center" justifyContent="center" spacing={0}>
                     <form style={{width: "100%"}}>
                         <Grid style={{margin: 20}} item xs={12}>
-                            <TextField onChange={e => setName(e.target.value)} autoComplete="given-name" required fullWidth label="First Name" />
+                            <TextField onChange={e => setName(e.target.value)} autoComplete="given-name" required fullWidth label="Name" />
                         </Grid>
                         <Grid style={{margin: 20}} item xs={12}>
                             <TextField onChange={e => setUsername(e.target.value)} autoComplete="username" required fullWidth label="Username" />

@@ -39,7 +39,7 @@ function LogIn (props) {
                         </Grid>
                         <Grid item container justifyContent="flex-end" xs={12}>
                             <Grid item xs={3}>
-                                <Button color="primary">Sign Up</Button>
+                                <Button color="primary" onClick={() => window.location="/signup"}>Sign Up</Button>
                             </Grid>
                             <Grid item xs={3}>
                                 <Button onClick={onSubmit} variant="contained" color="primary">Log In</Button>

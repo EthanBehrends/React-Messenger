@@ -33,4 +33,17 @@ router.route('/delete').delete((req,res) => {
         .catch(err => res.status(400).json('Error: ' + err))
 })
 
+router.route('/edit').put((req,res) => {
+    Message.findOne({_id: req.body.id})
+        .then(mess => {
+            mess.message = req.body.newMessage;
+            mess.edited = true;
+            mess.save().then(() => {
+                res.json('Message updated')
+            })
+            .catch(err => res.status(400).json("Error: " + err))
+        })
+        .catch(err => res.status(400).json("Error: " + err))
+})
+
 module.exports = router

@@ -5,10 +5,12 @@ import DeleteForeverIcon from '@material-ui/icons/DeleteForever'
 function Message (props) {
     return (
         <div className="messageCont">
-            <div className="delEdit">
-                <EditIcon></EditIcon>
-                <DeleteForeverIcon onClick={() => props.deleteFunc(props.dbId)}/>
-            </div>
+            {props.loggedInAs === props.username ? 
+                <div className="delEdit">
+                    <EditIcon></EditIcon>
+                    <DeleteForeverIcon onClick={() => props.deleteFunc(props.dbId)}/>
+                </div>
+             : "" }
             <div className="name">{props.name}<div className="username">{props.username}</div></div>
             <div className="messageContent">{props.content}</div>
         </div>

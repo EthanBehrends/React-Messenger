@@ -1,0 +1,29 @@
+.user-channel {
+    color: white;
+    display: block;
+    width: 100%;
+    padding: 10px 20px;
+    box-sizing: border-box;
+    background: linear-gradient(rgba(231, 231, 255, 0.1),5%, rgba(231, 231, 255, 0));
+    transition: .2s;
+    cursor: pointer;
+}
+
+.user-channel:hover:not(.selected) {
+    background: linear-gradient(rgba(231, 231, 255, 0.2),5%, rgba(231, 231, 255, 0))
+}
+
+.selected {
+    background: linear-gradient(rgba(231, 231, 255, 0.2),90%, rgba(231, 231, 255, 0))
+}
+
+.uc-name {
+    display: inline;
+}
+
+.uc-uname {
+    display: inline;
+    margin-left:.5em;
+    font-size:.8em;
+    opacity:.5;
+}

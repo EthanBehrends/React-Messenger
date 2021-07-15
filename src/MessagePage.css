@@ -40,3 +40,37 @@
     box-sizing:border-box;
     background: linear-gradient(rgba(231, 231, 255, 0.1),95%, rgba(231, 231, 255, 0));
 }
+
+.logoutBar {
+    color: white;
+    display: flex;
+    padding: 10px;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.logoutBar svg{
+    margin-right: 10px;
+    transition: .2s;
+    cursor: pointer;
+}
+
+.logoutBar svg:hover {
+    opacity: .5;
+}
+
+.channelButtons {
+    background-color: white;
+    color: black;
+    display: flex;
+    padding: 10px;
+    align-items: center;
+    justify-content: center;
+    opacity: .2;
+    transition: .2s;
+    cursor: pointer;
+}
+
+.channelButtons:hover {
+    opacity: .5;
+}

@@ -2,18 +2,37 @@ import './MessagePage.css'
 import Message from './Message'
 import MessageBox from './MessageBox'
 import Channel from './Channel'
+import PopupCont from './Popup'
+import UserChannel from './UserChannel'
 import axios from 'axios'
+import { TextField } from '@material-ui/core'
 import { useEffect, useState } from 'react'
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import AddCircleIcon from '@material-ui/icons/AddCircle';
+import Popup from 'reactjs-popup'
+
+function uChannelName(f,s) {
+    if(f<s) {
+        return("pms-" + f+s);
+    }
+    return("pms-"+s+f)
+}
 
 function MessagePage (props) {
     const [messages, setMessages] = useState([]);
     const [channels, setChannels] = useState([]);
+    const [users, setUsers] = useState([]);
     const [channel, setChannel] = useState("General")
+    const [channelText, setChannelText] = useState()
 
     useEffect(() => {
         axios.get('http://localhost:5000/channels')
         .then(response => setChannels(response.data))
+    },[])
+
+    useEffect(() => {
+        axios.get('http://localhost:5000/users')
+        .then(response => setUsers(response.data))
     },[])
 
     useEffect(() => {
@@ -26,11 +45,20 @@ function MessagePage (props) {
         props.socket.emit("sendMessage", mess)
     }
 
+    let editMessage = (mess) => {
+        return
+    }
+
     let deleteMessage = (id) => {
         props.socket.emit("deleteMessage", id)
         axios.delete('http://localhost:5000/messages/delete', { data: {id: id}}) 
         setMessages(m => [...m].filter(x => x._id !== id))
 
+    }
+
+    let addChannel = () => {
+        setChannels([...channels, {channel: channelText}])
+        // props.socket.emit("sendMessage", mess)
     }
 
     useEffect(() => {
@@ -50,14 +78,16 @@ function MessagePage (props) {
                 {
                     messages.slice(0).reverse().map((x,i) => {
                         return(
-                            <Message deleteFunc={deleteMessage} dbId={x._id} key={i} username={x.username} name={x.name} content={x.message}></Message>
+                            <Message deleteFunc={deleteMessage} dbId={x._id} key={i} loggedInAs={props.username} username={x.username} name={x.name} content={x.message}></Message>
                         )
                     })
                 }
             </div>
             <MessageBox username={props.username} name={props.name} channel={channel} addMessage={addMessage}></MessageBox>
             <div id="channels">
-                <ExitToAppIcon style={{color: 'white'}} onClick={props.logout} />
+                <div className="logoutBar">
+                    <ExitToAppIcon style={{color: 'white'}} onClick={props.logout} /><span>{"Logged in as " + props.name}</span>
+                </div>
                 <div className="channelsHeader">Channels</div>
                 {
                     channels.slice(0).sort().map((x,i) => {
@@ -66,7 +96,25 @@ function MessagePage (props) {
                         )
                     })
                 }
+                <Popup modal trigger={
+                    <div className="channelButtons">
+                        <AddCircleIcon />
+                    </div>
+                } position="center center">
+                    {close => (
+                        <PopupCont title="Add New Channel" close={close} onSubmit={() => {addChannel(); close();}}>
+                            <TextField onChange={e=>setChannelText(e.target.value)} placeholder={"Channel Name"} className="fullWidth" variant="outlined"/>
+                        </PopupCont>
+                    )}
+                </Popup>
                 <div className="channelsHeader">Users</div>
+                {
+                    users.slice(0).sort().map((x,i) => {
+                        return (
+                            (props.username !== x.username ? <UserChannel key={i} select={setChannel} selected={channel} name={x.name} channel={uChannelName(props.username,x.username)} username={x.username} /> : "")
+                        )
+                    })
+                }
             </div>
         </div>
     )
