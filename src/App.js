@@ -29,7 +29,7 @@ function App() {
         {user ? <MessagePage name={name} username={user} logout={logout} socket={socket}/> : <Redirect to="/login" />}
       </Route>
       <Route path="/signup" exact>
-        {user ? <Redirect to="/" /> : <SignUp socket={socket}/>}
+        {user ? <Redirect to="/" /> : <SignUp setUser={setUser} setName={setName} socket={socket}/>}
         
       </Route>
       <Route path="/login" exact>

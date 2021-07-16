@@ -1,0 +1,29 @@
+#Navigation {
+    background:rgb(10, 8, 26);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    color: white;
+    z-index: 2;
+    height: 60px;
+    padding: 5px 10px;
+    box-sizing: border-box;
+    transition: .2s;
+    box-shadow: 0px 2px 2px rgba(0,0,0,.7);
+}
+
+#Navigation svg {
+    height: 100%;
+    width: 30px
+}
+
+.open {
+    left: 90vw !important;
+}
+
+@media screen and (min-width: 551px) {
+    #Navigation {
+        display: none;
+    }
+}

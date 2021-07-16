@@ -10,6 +10,7 @@ import { useEffect, useState } from 'react'
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import Popup from 'reactjs-popup'
+import Nav from './Nav'
 
 function uChannelName(f,s) {
     if(f<s) {
@@ -24,6 +25,10 @@ function MessagePage (props) {
     const [users, setUsers] = useState([]);
     const [channel, setChannel] = useState("General")
     const [channelText, setChannelText] = useState()
+    const [editOpen, setEditOpen] = useState(false)
+    const [editText, setEditText] = useState("")
+    const [editId, setEditId] = useState("")
+    const [drawer, setDrawer] = useState(false)
 
     useEffect(() => {
         axios.get('http://localhost:5000/channels')
@@ -45,8 +50,32 @@ function MessagePage (props) {
         props.socket.emit("sendMessage", mess)
     }
 
-    let editMessage = (mess) => {
-        return
+    const openEditPopup = (mess, id) => {
+        setEditText(mess)
+        setEditOpen(true)
+        setEditId(id)
+    }
+
+    const closeEditPopup = () => {
+        setEditText("");
+        setEditOpen(false)
+    }
+
+    let editMessage = (mess, id) => {
+        axios.put('http://localhost:5000/messages/edit', {
+                id: id,
+                newMessage: mess
+            }
+        ).then(() =>{
+            props.socket.emit("editMessage", {
+                channel: channel,
+                id: id,
+                message: mess
+            });
+            axios.get('http://localhost:5000/messages?channel=' + channel)
+            .then(response => setMessages(response.data))
+        })
+        setEditOpen(false)
     }
 
     let deleteMessage = (id) => {
@@ -57,8 +86,16 @@ function MessagePage (props) {
     }
 
     let addChannel = () => {
-        setChannels([...channels, {channel: channelText}])
-        // props.socket.emit("sendMessage", mess)
+        axios.post('http://localhost:5000/channels/new', {
+            creator: props.username,
+            name: channelText
+        }).then(() => {
+            setChannels(c => [...c, {channel: channelText}])
+            props.socket.emit("addChannel", {
+                creator: props.username,
+                name: channelText
+            })
+        })
     }
 
     useEffect(() => {
@@ -69,22 +106,41 @@ function MessagePage (props) {
             props.socket.on("delMessage", data => {
                 setMessages(m => [...m].filter(x => x._id !== data))
             })
+            props.socket.on("messageEdited", data => {
+                if(data.channel === channel) {
+                    setMessages(m => [...m].map(x => {
+                        if(x._id === data.id) {
+                            x.message = data.message
+                        }
+                        return (x)
+                    }))
+                }
+            })
+            props.socket.on("channelAdded", data => {
+                setChannels(c => [...c, {channel: data.name}])
+            })
         }
     }, [props.socket])
 
     return (
         <div id="messagePage">
+            <Nav open={drawer} onClick={() => setDrawer(d => !d)}></Nav>
             <div id="messages">
                 {
                     messages.slice(0).reverse().map((x,i) => {
                         return(
-                            <Message deleteFunc={deleteMessage} dbId={x._id} key={i} loggedInAs={props.username} username={x.username} name={x.name} content={x.message}></Message>
+                            <Message setChannel={setChannel} editFunc={openEditPopup} edited={x.edited ? x.edited : false} deleteFunc={deleteMessage} dbId={x._id} key={i} loggedInAs={props.username} username={x.username} name={x.name} content={x.message}></Message>
                         )
                     })
                 }
+                <Popup modal open={editOpen}>
+                    <PopupCont title="Edit Message" onSubmit={() => {editMessage(editText, editId)}} close={closeEditPopup}>
+                        <TextField onChange={e=>setEditText(e.target.value)} defaultValue={editText} className={"fullWidth"} variant="outlined" />
+                    </PopupCont>
+                </Popup>
             </div>
             <MessageBox username={props.username} name={props.name} channel={channel} addMessage={addMessage}></MessageBox>
-            <div id="channels">
+            <div id="channels" onClick={() => setDrawer(false)} className={(drawer ? "openChannels" : "")}>
                 <div className="logoutBar">
                     <ExitToAppIcon style={{color: 'white'}} onClick={props.logout} /><span>{"Logged in as " + props.name}</span>
                 </div>
@@ -116,6 +172,7 @@ function MessagePage (props) {
                     })
                 }
             </div>
+
         </div>
     )
 }

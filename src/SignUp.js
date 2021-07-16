@@ -32,7 +32,10 @@ function SignUp (props) {
             hash: passData.hash,
             salt: passData.salt
         }
-        axios.post("http://localhost:5000/users/add", data)
+        axios.post("http://localhost:5000/users/add", data).then(() => {
+            props.setName(name)
+            props.setUser(username)
+        })
     }
 
     return(
@@ -57,6 +60,9 @@ function SignUp (props) {
                             <TextField onChange={e => setCPassword(e.target.value)} autoComplete="new-password" required fullWidth type="password" label="Confirm Password" />
                         </Grid>
                         <Grid style={{margin: 20}} container justifyContent={"flex-end"} item xs={12}>
+                            <Grid item xs={3}>
+                                <Button color="primary" onClick={() => window.location="/login"}>Log In</Button>
+                            </Grid>
                             <Grid item xs={3}>
                                 <Button onClick={onSubmit} variant="contained" color="primary">Sign Up</Button>
                             </Grid>

@@ -1,6 +1,8 @@
 import './MessageBox.css'
 import axios from 'axios'
 import { useState } from 'react'
+import { TextField } from '@material-ui/core'
+import SendIcon from '@material-ui/icons/Send';
 
 function MessageBox(props) {
     const [message, setMessage] = useState("");
@@ -24,8 +26,10 @@ function MessageBox(props) {
     return (
         <div id="messageBox">
             <form onSubmit={e => onSubmit(e)}>
-                <textarea id="textbox" onChange={e => setMessage(e.target.value)} value={message} placeholder="Send a message..."></textarea>
-                <input id="submit" type="submit"></input>
+                <TextField fullWidth id="textbox" variant="outlined" onChange={e => setMessage(e.target.value)} value={message} multiline rows={3} placeholder="Send a message..." />
+                <div id="submitCont">
+                    <button id="submit" type="submit"><SendIcon /></button>
+                </div>
             </form>
         </div>
     )

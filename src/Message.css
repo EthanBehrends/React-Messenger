@@ -7,6 +7,8 @@
 
 .name {
     font-weight: bold;
+    cursor: pointer;
+    transition: .2s;
 }
 
 .username {
@@ -36,4 +38,15 @@
 
 .messageCont:hover .delEdit {
     display: block
+}
+
+.edited::after {
+    content: ' (Edited)';
+    font-size: .8em;
+    font-style: italic;
+    opacity: .5;
+}
+
+.name:hover {
+    text-decoration: underline;
 }

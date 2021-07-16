@@ -58,4 +58,10 @@ io.on('connection', socket => {
     socket.on('deleteMessage', data => {
         socket.broadcast.emit("delMessage", data)
     })
+    socket.on('editMessage', data => {
+        socket.broadcast.emit("messageEdited",data)
+    })
+    socket.on('addChannel', data => {
+        socket.broadcast.emit("channelAdded",data)
+    })
 })
