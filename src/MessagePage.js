@@ -129,7 +129,7 @@ function MessagePage (props) {
                 {
                     messages.slice(0).reverse().map((x,i) => {
                         return(
-                            <Message setChannel={setChannel} editFunc={openEditPopup} edited={x.edited ? x.edited : false} deleteFunc={deleteMessage} dbId={x._id} key={i} loggedInAs={props.username} username={x.username} name={x.name} content={x.message}></Message>
+                            <Message setChannel={setChannel} editFunc={openEditPopup} edited={x.edited ? x.edited : false} time={x.time} deleteFunc={deleteMessage} dbId={x._id} key={i} loggedInAs={props.username} username={x.username} name={x.name} content={x.message}></Message>
                         )
                     })
                 }

@@ -20,13 +20,13 @@
     justify-content: center;
     outline:none;
     border: none;
-    background:rgb(43, 41, 46,.6);
+    background:hsl(230, 34%, 14%);
     color: white;
     transition: .2s;
     cursor: pointer;
 }
 #submit:hover {
-    background:rgb(43, 41, 46, .7);
+    background:hsl(230, 34%, 14%,.8);;
 }
 
 #submitCont {

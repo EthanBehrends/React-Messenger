@@ -1,8 +1,8 @@
 .messageCont {
     padding: 15px;
     position: relative;
-    box-shadow: 0px 0px 2px rgba(0,0,0,.5);
-    background: linear-gradient(rgba(0,0,10,.2),5%, rgba(0,0,10,0))
+    box-shadow: 0px 0px 2px rgba(0,0,0,.1);
+    background: linear-gradient(rgba(0,0,10,.05),5%, rgba(0,0,10,0))
 }
 
 .name {
@@ -11,9 +11,9 @@
     transition: .2s;
 }
 
-.username {
+.mTime {
     display: inline;
-    padding: 0 1em;
+    padding: 0 .5em;
     font-weight: lighter;
     font-style: italic;
     font-size: .8em;

@@ -26,7 +26,7 @@ function MessageBox(props) {
     return (
         <div id="messageBox">
             <form onSubmit={e => onSubmit(e)}>
-                <TextField fullWidth id="textbox" variant="outlined" onChange={e => setMessage(e.target.value)} value={message} multiline rows={3} placeholder="Send a message..." />
+                <TextField fullWidth id="textbox" onKeyDown={e => {if(e.key === "Enter") onSubmit(e)}} variant="outlined" onChange={e => setMessage(e.target.value)} value={message} multiline rows={3} placeholder="Send a message..." />
                 <div id="submitCont">
                     <button id="submit" type="submit"><SendIcon /></button>
                 </div>
